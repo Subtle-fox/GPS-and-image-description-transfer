@@ -10,10 +10,13 @@
         <TextBox x:Name="DestPath" HorizontalAlignment="Left" Margin="116,56,0,0" TextWrapping="Wrap" Text="Choose destinaton folder" VerticalAlignment="Top" Width="391" Foreground="Gray" IsReadOnly="True" MaxLines="1" />
 
         <Button Content="Run!" HorizontalAlignment="Left" Margin="20,94,0,-18" VerticalAlignment="Top" Width="75" Click="Button_Click_Convert"/>
-        <StackPanel Margin="0,119,0,30" Height="80" RenderTransformOrigin="0.505,0.725">
-            <Label x:Name="Progress" Visibility="Collapsed" HorizontalAlignment="Center"  Content="0%"/>
-            <Label x:Name="Total" Visibility="Collapsed" HorizontalAlignment="Left" Content="Total files"/>
-            <Label x:Name="Errors" Visibility="Collapsed" HorizontalAlignment="Left" Content="Errors"/>
+        <StackPanel Margin="0,119,0,30" RenderTransformOrigin="0.505,0.725">
+            <Label x:Name="Progress"  HorizontalAlignment="Center"  Content="0%"/>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="Total" Visibility="Collapsed" HorizontalAlignment="Left" Width="180" Content="Total files" Foreground="Green"/>
+                <Label x:Name="Skiped" Visibility="Collapsed" HorizontalAlignment="Left" Width="180" Content="Skiped files"/>
+                <Label x:Name="Errors" Visibility="Collapsed" HorizontalAlignment="Left" Width="180" Content="Errors" Foreground="Red"/>
+            </StackPanel>
         </StackPanel>
 
     </Grid>

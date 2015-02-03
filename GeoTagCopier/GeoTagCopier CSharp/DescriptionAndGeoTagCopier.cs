@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Windows.Documents;
 using ExifLibrary;
 using XperiCode.JpegMetadata;
 
@@ -24,19 +23,21 @@ namespace GeoTagCopier_CSharp
         public void Run(object sender, DoWorkEventArgs doWorkEventArgs)
         {
             var errorFiles = new List<string>();
+            var skippedFiles = new List<string>();
             var sourceFiles = GetJpegFiles(_sourceFolder);
             var destFiles = GetJpegFiles(_destFolder);
 
             var worker = (sender as BackgroundWorker);
-            worker.ReportProgress(0);
+            var progress = 0;
+            worker.ReportProgress(progress);
             foreach (var sourceFile in sourceFiles)
             {
                 try
                 {
                     var sourceFileName = new FileInfo(sourceFile).Name;
-                    if (!destFiles.Exists(f => new FileInfo(f).Name.Equals(sourceFileName))) 
+                    if (!destFiles.Exists(f => new FileInfo(f).Name.Equals(sourceFileName)))
                     {
-                        errorFiles.Add(sourceFileName);
+                        skippedFiles.Add(sourceFileName);
                         continue;
                     }
 
@@ -49,10 +50,14 @@ namespace GeoTagCopier_CSharp
                     Console.WriteLine(e.Message);
                     errorFiles.Add(new FileInfo(sourceFile).Name);
                 }
-                worker.ReportProgress(100 / sourceFiles.Count);
+                finally
+                {
+                    progress++;
+                    worker.ReportProgress(100 * progress / sourceFiles.Count);
+                }
             }
 
-            doWorkEventArgs.Result = Tuple.Create(sourceFiles, errorFiles);
+            doWorkEventArgs.Result = Tuple.Create(sourceFiles, skippedFiles, errorFiles);
         }
 
         List<string> GetJpegFiles(string folder)
@@ -88,8 +93,7 @@ namespace GeoTagCopier_CSharp
             var destExifFile = ExifFile.Read(destName);
             for (int shift = 0; shift < 31; shift++)
             {
-                int t = (int)IFD.GPS + shift;
-                var tag = (ExifTag)t;
+                var tag = (ExifTag)((int)IFD.GPS + shift);
                 if (sourceExifFile.Properties.ContainsKey(tag))
                 {
                     var gpsValue = sourceExifFile.Properties[tag];
@@ -100,22 +104,6 @@ namespace GeoTagCopier_CSharp
             destExifFile.Save(tmpName, false);
             File.Delete(destName);
             File.Move(tmpName, destName);
-
-
-            //var longitude = exifFile.Properties[ExifTag.GPSLongitude] as GPSLatitudeLongitude;
-            //var latitude = exifFile.Properties[ExifTag.GPSLatitude] as GPSLatitudeLongitude;
-            //var altitude = exifFile.Properties[ExifTag.GPSAltitude] as ExifSRational;
-
-
-            //using (var reader = new ExifReader(fileName))
-            //{
-            //    object longitude, latitude, altitude;
-            //    reader.GetTagValue(ExifTags.GPSLatitude, out latitude);
-            //    reader.GetTagValue(ExifTags.GPSLongitude, out longitude);
-            //    reader.GetTagValue(ExifTags.GPSAltitude, out altitude);
-
-            //    Console.WriteLine("{0}, {1}, {2}", altitude, latitude, longitude);
-            //}
         }
     }
 }

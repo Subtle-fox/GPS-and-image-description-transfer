@@ -56,7 +56,7 @@ namespace GeoTagCopier_CSharp
             //}
 
             Progress.Visibility = Visibility.Visible;
-            Total.Visibility = Errors.Visibility = Visibility.Collapsed;
+            Total.Visibility = Errors.Visibility = Skiped.Visibility = Visibility.Collapsed;
 
             var worker = new BackgroundWorker {WorkerReportsProgress = true};
             var copier = new DescriptionAndGeoTagCopier(_sourcePath, _destPath);
@@ -73,10 +73,11 @@ namespace GeoTagCopier_CSharp
             else
                 Progress.Content = string.Format("Error :-(");
 
-            Total.Visibility = Errors.Visibility = Visibility.Visible;
-            var res = runWorkerCompletedEventArgs.Result as Tuple<List<String>, List<String>>;
+            Total.Visibility = Errors.Visibility = Skiped.Visibility = Visibility.Visible;
+            var res = runWorkerCompletedEventArgs.Result as Tuple<List<String>, List<String>, List<String>>;
             Total.Content = "Total jpeg files: " + res.Item1.Count;
-            Errors.Content = "Including errors: " + res.Item2.Count;
+            Skiped.Content = "Skiped files: " + res.Item2.Count;
+            Errors.Content = "Including errors: " + res.Item3.Count;
         }
 
         private void WorkerOnProgressChanged(object sender, ProgressChangedEventArgs progressChangedEventArgs)
