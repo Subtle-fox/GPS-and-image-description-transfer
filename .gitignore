@@ -4,3 +4,11 @@
 *.exe
 \bin\
 \obj\
+/GeoTagCopier/Backup
+/GeoTagCopier/GeoTagCopier CSharp/bin/Debug
+/GeoTagCopier/GeoTagCopier CSharp/obj/Debug
+/GeoTagCopier/ExifLibrary/ExifLibrary/obj/Debug
+/GeoTagCopier/ExifLibrary/ExifLibrary/bin/Debug
+/GeoTagCopier/ExifLib/Exiflib/obj/Debug/ExifLib.csproj.FileListAbsolute.txt
+/GeoTagCopier/packages
+*.user
