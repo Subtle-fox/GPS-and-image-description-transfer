@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using MessageBox = System.Windows.Forms.MessageBox;
 
-namespace GeoTagCopier_CSharp
+namespace GeoTagCopier
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -32,6 +28,7 @@ namespace GeoTagCopier_CSharp
                 _sourcePath = dlg.SelectedPath;
                 SourcePath.Text = _sourcePath;
             }
+            CheckConditions();
         }
 
         private void Button_Click_DestFiles(object sender, RoutedEventArgs e)
@@ -43,18 +40,16 @@ namespace GeoTagCopier_CSharp
                 _destPath = dlg.SelectedPath;
                 DestPath.Text = _destPath;
             }
+            CheckConditions();
+        }
+
+        private void CheckConditions()
+        {
+            RunBtn.IsEnabled = !string.IsNullOrEmpty(_sourcePath) && !string.IsNullOrEmpty(_destPath);
         }
 
         private void Button_Click_Convert(object sender, RoutedEventArgs e)
         {
-            //if (Directory.GetFiles(_destPath).Any())
-            //{
-            //    MessageBox.Show("Select empty folder or delete all files in destination",
-            //        "Destination folder is not empty",
-            //        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
-
             Progress.Visibility = Visibility.Visible;
             Total.Visibility = Errors.Visibility = Skiped.Visibility = Visibility.Collapsed;
 

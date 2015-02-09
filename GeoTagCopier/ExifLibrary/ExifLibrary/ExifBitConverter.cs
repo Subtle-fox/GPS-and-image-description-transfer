@@ -80,31 +80,6 @@ namespace ExifLibrary
             }
         }
 
-        private static readonly Regex _nullDateTimeMatcher = new Regex(@"^[\s0]{4}[:\s][\s0]{2}[:\s][\s0]{5}[:\s][\s0]{2}[:\s][\s0]{2}$");
-        private static bool ToDateTime(string str, out DateTime result)
-        {
-            // From page 28 of the Exif 2.2 spec (http://www.exif.org/Exif2-2.PDF): 
-
-            // "When the field is left blank, it is treated as unknown ... When the date and time are unknown, 
-            // all the character spaces except colons (":") may be filled with blank characters"
-            if (string.IsNullOrEmpty(str) || _nullDateTimeMatcher.IsMatch(str))
-            {
-                result = DateTime.MinValue;
-                return false;
-            }
-
-            // There are 2 types of date - full date/time stamps, and plain dates. Dates are 10 characters long.
-            if (str.Length == 10)
-            {
-                result = DateTime.ParseExact(str, "yyyy:MM:dd", CultureInfo.InvariantCulture);
-                return true;
-            }
-
-            // "The format is "YYYY:MM:DD HH:MM:SS" with time shown in 24-hour format, and the date and time separated by one blank character [20.H].
-            result = DateTime.ParseExact(str, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
-            return true;
-        }
-
         /// <summary>
         /// Returns a DateTime object converted from the given byte array.
         /// </summary>

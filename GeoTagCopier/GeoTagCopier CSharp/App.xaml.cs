@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace GeoTagCopier_CSharp
+namespace Utils.GeoTagCopier
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -6,7 +6,7 @@ using System.Linq;
 using ExifLibrary;
 using XperiCode.JpegMetadata;
 
-namespace GeoTagCopier_CSharp
+namespace GeoTagCopier
 {
     class DescriptionAndGeoTagCopier
     {
@@ -18,8 +18,7 @@ namespace GeoTagCopier_CSharp
             _sourceFolder = sourceFolder;
             _destFolder = destFolder;
         }
-
-
+        
         public void Run(object sender, DoWorkEventArgs doWorkEventArgs)
         {
             var errorFiles = new List<string>();
