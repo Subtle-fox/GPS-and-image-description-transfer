@@ -12,3 +12,4 @@
 /GeoTagCopier/ExifLib/Exiflib/obj/Debug/ExifLib.csproj.FileListAbsolute.txt
 /GeoTagCopier/packages
 *.user
+*.suo
